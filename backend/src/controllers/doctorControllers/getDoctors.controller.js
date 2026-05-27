@@ -1,32 +1,43 @@
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../../prisma');
 
-const prisma = new PrismaClient();
+const getDoctors = async(req,res)=>{
+ try{
 
-const getDoctors = async (req, res) => {
-  try {
-    const { search, specialization } = req.query;
+   const {search,specialization}=req.query;
 
-    let query = 'SELECT * FROM "Doctor"';
-    const conditions = [];
+   const doctors =
+   await prisma.doctor.findMany({
+      where:{
+         ...(search && {
+            name:{
+               contains:search,
+               mode:"insensitive"
+            }
+         }),
 
-    if (search) {
-      conditions.push(`name ILIKE '%${search}%'`);
-    }
+         ...(specialization &&
+            specialization!=="All" && {
 
-    if (specialization && specialization !== 'All') {
-      conditions.push(`specialization = '${specialization}'`);
-    }
+            specialization:{
+               equals:specialization,
+               mode:"insensitive"
+            }
+         })
+      }
+   });
 
-    if (conditions.length > 0) {
-      query += ' WHERE ' + conditions.join(' AND ');
-    }
+   res.status(200).json({
+      success: true,
+      doctors
+   });
 
-    console.log(`[SQL-DEBUG] Executing Query: ${query}`);
-    const doctors = await prisma.$queryRawUnsafe(query);
-    res.json(doctors);
-  } catch (error) {
-    res.status(500).json({ error: 'Database execution failure', sqlMessage: error.message });
-  }
-};
+ }
+ catch(error){
+   console.error(error);
+   res.status(500).json({
+      error:"Database execution failure"
+   });
+ }
+}
 
 module.exports = { getDoctors };

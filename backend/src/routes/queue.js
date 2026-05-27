@@ -6,8 +6,13 @@ const { updateQueueToken } = require('../controllers/queueControllers/updateQueu
 
 const router = express.Router();
 
+// GET /api/queue
 router.get('/', authenticate, getQueue);
+
+// POST /api/queue/checkin
 router.post('/checkin', authenticate, checkIn);
+
+// PATCH /api/queue/:id
 router.patch('/:id', authenticate, updateQueueToken);
 
 module.exports = router;

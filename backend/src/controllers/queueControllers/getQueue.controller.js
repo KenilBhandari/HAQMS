@@ -17,9 +17,10 @@ const getQueue = async (req, res) => {
       orderBy: { createdAt: 'asc' },
     });
 
-    res.json(tokens);
+    res.json({ success: true, tokens });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve queue', details: error.message });
+    console.error('Error retrieving queue:', error);
+    res.status(500).json({ error: 'Failed to retrieve queue' });
   }
 };
 

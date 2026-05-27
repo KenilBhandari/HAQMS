@@ -24,10 +24,12 @@ const getPatients = async (req, res) => {
     ]);
 
     res.status(200).json({
+      success:true,
       patients,
       pagination: { page, limit, totalPatients, totalPages: Math.ceil(totalPatients / limit) },
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Failed to fetch patients' });
   }
 };

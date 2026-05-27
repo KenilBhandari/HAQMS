@@ -7,9 +7,16 @@ const { deletePatient } = require('../controllers/patientControllers/deletePatie
 
 const router = express.Router();
 
+// GET /api/patients
 router.get('/', authenticate, getPatients);
+
+// GET /api/patients/:id
 router.get('/:id', authenticate, getPatientById);
+
+// POST /api/patients
 router.post('/', authenticate, createPatient);
+
+// DELETE /api/patients/:id
 router.delete('/:id', authenticate, authorize(['ADMIN']), deletePatient);
 
 module.exports = router;

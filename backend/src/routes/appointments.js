@@ -6,8 +6,13 @@ const { updateAppointment } = require('../controllers/appointmentControllers/upd
 
 const router = express.Router();
 
+// GET /api/appointments
 router.get('/', authenticate, getAppointments);
+
+// POST /api/appointments
 router.post('/', authenticate, createAppointment);
+
+// PATCH /api/appointments
 router.patch('/:id', authenticate, updateAppointment);
 
 module.exports = router;

@@ -1,11 +1,20 @@
-const prisma = require('../../prisma');
+const prisma = require("../../prisma");
 
 const updateQueueToken = async (req, res) => {
   try {
     const { status } = req.body;
 
     if (!status) {
-      return res.status(400).json({ error: 'Status is required' });
+      return res.status(400).json({ error: "Status is required" });
+    }
+
+    const token = await prisma.queueToken.findUnique({
+      where: { id: req.params.id },
+    });
+    if (!token) {
+      return res.status(404).json({
+        error: "Queue token not found",
+      });
     }
 
     const updatedToken = await prisma.queueToken.update({
@@ -17,9 +26,11 @@ const updateQueueToken = async (req, res) => {
       },
     });
 
-    res.json(updatedToken);
+    res.json({ success: true, token: updatedToken });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update queue token', details: error.message });
+    res
+      .status(500)
+      .json({ error: "Failed to update queue token" });
   }
 };
 

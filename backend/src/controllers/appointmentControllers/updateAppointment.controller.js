@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../../prisma');
 
 const updateAppointment = async (req, res) => {
   try {
@@ -9,14 +8,27 @@ const updateAppointment = async (req, res) => {
       return res.status(400).json({ error: 'Status is required' });
     }
 
+    const appointment = await prisma.appointment.findUnique({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!appointment) {
+      return res.status(404).json({
+        error: 'Appointment not found'
+      });
+    }
+
+
     const updated = await prisma.appointment.update({
       where: { id: req.params.id },
       data: { status },
     });
-
-    res.json(updated);
+    res.status(200).json({ success: true, appointment: updated });
+    
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update appointment', details: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Failed to update appointment' });
   }
 };
 

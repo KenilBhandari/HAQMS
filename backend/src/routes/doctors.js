@@ -6,8 +6,13 @@ const { getDoctorById } = require('../controllers/doctorControllers/getDoctorByI
 
 const router = express.Router();
 
+// GET /api/doctors
 router.get('/', authenticate, getDoctors);
+
+// GET /api/doctors/stats
 router.get('/stats', authenticate, getDoctorStats);
+
+// GET /api/doctors/:id
 router.get('/:id', authenticate, getDoctorById);
 
 module.exports = router;

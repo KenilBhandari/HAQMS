@@ -1,6 +1,6 @@
-const prisma = require('../prisma');
+const prisma = require('../../prisma');
 const bcrypt = require('bcryptjs');
-const { emailRegex, passwordRegex } = require('../utils/regex');
+const { emailRegex, passwordRegex } = require('../../utils/regex');
 
 const registerController = async (req, res) => {
   try {
@@ -47,6 +47,7 @@ const registerController = async (req, res) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "User registered successfully",
       user: {
         id: user.id,

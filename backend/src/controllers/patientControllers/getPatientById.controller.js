@@ -8,9 +8,10 @@ const getPatientById = async (req, res) => {
     });
 
     if (!patient) return res.status(404).json({ error: 'Patient not found' });
-    res.json(patient);
+    res.json({ success: true, patient });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error retrieving patient:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

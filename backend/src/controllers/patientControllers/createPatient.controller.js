@@ -35,7 +35,7 @@ const createPatient = async (req, res) => {
       },
     });
 
-    res.status(201).json(patient);
+    res.status(201).json({ success: true, patient });
   } catch (error) {
     res.status(500).json({ error: 'Failed to register patient' });
   }

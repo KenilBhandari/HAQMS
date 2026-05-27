@@ -1,11 +1,17 @@
-import PrismaClient from '@prisma/client';
-const bcrypt = require('bcryptjs');
-
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
 
 async function main() {
 
   const hashedPassword = await bcrypt.hash('password123', 10);
+
+  await prisma.queueToken.deleteMany();
+  await prisma.appointment.deleteMany();
+  await prisma.doctor.deleteMany({ where: { userId: null } });
+  await prisma.patient.deleteMany({
+    where: { id: { notIn: ['clark-kent', 'bruce-wayne'] } },
+  });
 
   // ── Users ──
   const admin = await prisma.user.upsert({

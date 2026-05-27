@@ -1,26 +1,63 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require("../../prisma");
 
 const createAppointment = async (req, res) => {
   try {
     const { patientId, doctorId, appointmentDate, reason } = req.body;
 
     if (!patientId || !doctorId || !appointmentDate) {
-      return res.status(400).json({ error: 'Patient, Doctor, and Appointment Date are required.' });
+      return res
+        .status(400)
+        .json({ error: "Patient, Doctor, and Appointment Date are required." });
     }
 
     const appDate = new Date(appointmentDate);
+
+    const [patient, doctor] = await Promise.all([
+      prisma.patient.findUnique({
+        where: { id: patientId },
+      }),
+
+      prisma.doctor.findUnique({
+        where: { id: doctorId },
+      }),
+    ]);
+
+    if (!patient) {
+      return res.status(404).json({
+        error: "Patient not found",
+      });
+    }
+
+    if (!doctor) {
+      return res.status(404).json({
+        error: "Doctor not found",
+      });
+    }
+
+    if (doctor.startTime && doctor.endTime) {
+      const appointmentTime = appDate.toTimeString().slice(0, 5);
+
+      if (
+        appointmentTime < doctor.startTime ||
+        appointmentTime > doctor.endTime
+      ) {
+        return res.status(400).json({
+          error: "Appointment outside doctor working hours",
+        });
+      }
+    }
+
     const existingBooking = await prisma.appointment.findFirst({
       where: {
         doctorId,
         appointmentDate: appDate,
-        status: { not: 'CANCELLED' },
+        status: { not: "CANCELLED" },
       },
     });
 
     if (existingBooking) {
       return res.status(400).json({
-        error: 'Double booking blocked. Doctor already has an appointment at this exact millisecond.',
+        error: "Doctor already has appointment at this time.",
       });
     }
 
@@ -29,17 +66,19 @@ const createAppointment = async (req, res) => {
         patientId,
         doctorId,
         appointmentDate: appDate,
-        reason: reason || '',
-        status: 'PENDING',
+        reason: reason || "",
+        status: "PENDING",
       },
     });
 
     res.status(201).json({
-      message: 'Appointment booked successfully',
+      success: true,
+      message: "Appointment booked successfully",
       appointment,
     });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to book appointment', details: error.message });
+    console.log(error);
+    res.status(500).json({ error: "Failed to create appointment" });
   }
 };
 

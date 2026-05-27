@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+// import
 import { useAuth } from '@/context/AuthContext';
 import Navbar from '@/components/common/Navbar';
 import { useRouter } from 'next/navigation';
@@ -108,8 +109,8 @@ export default function Dashboard() {
       const res = await fetch(`${API_BASE_URL}/doctors`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      const data = await res.json();
-      setDoctorsList(data);
+      const { doctors } = await res.json();
+      setDoctorsList(doctors || []);
     } catch (e) {
       console.error(e);
     }
@@ -354,8 +355,8 @@ export default function Dashboard() {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      if (Array.isArray(data)) {
-        setDoctorsList(data);
+      if (Array.isArray(data.data)) {
+        setDoctorsList(data.data);
       } else {
         alert(`API Error: ${data.sqlMessage || data.error}`);
       }

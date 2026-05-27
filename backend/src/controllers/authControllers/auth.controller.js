@@ -1,4 +1,4 @@
-const prisma = require('../prisma');
+const prisma = require('../../prisma');
 
 const authController = async (req, res) => {
   try {
@@ -12,11 +12,12 @@ const authController = async (req, res) => {
     }
     
     res.status(200).json({
-      message: "User details retrieved successfully",
+      success: true,
       user,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error while fetching user details:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

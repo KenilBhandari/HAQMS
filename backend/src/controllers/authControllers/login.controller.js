@@ -1,4 +1,4 @@
-const prisma = require('../prisma');
+const prisma = require('../../prisma');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -31,15 +31,13 @@ const loginController = async (req, res) => {
     );
 
     res.status(200).json({
-      message: "Login successfull",
-      data: {
-        token,
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        },
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
       },
     });
   } catch (error) {

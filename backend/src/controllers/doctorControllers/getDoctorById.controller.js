@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const prisma = require('../../prisma');
 
 const getDoctorById = async (req, res) => {
   try {
@@ -11,10 +9,10 @@ const getDoctorById = async (req, res) => {
     if (!doctor) {
       return res.status(404).json({ error: 'Doctor not found' });
     }
-
-    res.json(doctor);
+    res.json({ success: true, doctor });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error retrieving doctor:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

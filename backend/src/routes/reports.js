@@ -1,9 +1,10 @@
 const express = require('express');
 const { authenticate } = require('../middleware/auth');
-const { getDoctorStatsReport } = require('../controllers/reportControllers/getDoctorStatsReport.controller');
+const { getDoctorReport } = require('../controllers/reportControllers/getDoctorReport.controller');
 
 const router = express.Router();
 
-router.get('/doctor-stats', authenticate, getDoctorStatsReport);
+// GET /api/reports/doctor-stats
+router.get('/doctor-stats', authenticate, getDoctorReport);
 
 module.exports = router;
