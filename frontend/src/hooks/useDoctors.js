@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { getDoctors, searchDoctors } from '@/services/doctors';
 
 export function useDoctors(baseUrl, token) {
@@ -20,7 +21,7 @@ export function useDoctors(baseUrl, token) {
       if (data.success && Array.isArray(data.doctors)) {
         setDoctorsList(data.doctors);
       } else {
-        alert(`API Error: ${data.sqlMessage || data.error}`);
+        toast.error(data.sqlMessage || data.error);
       }
     } catch (e) {
       console.error(e);

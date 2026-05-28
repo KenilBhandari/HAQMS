@@ -65,7 +65,10 @@ export default function StaffManager() {
     try {
       const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ name, email, password, role }),
       });
       const data = await res.json();

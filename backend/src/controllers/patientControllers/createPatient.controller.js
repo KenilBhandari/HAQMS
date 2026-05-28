@@ -1,5 +1,5 @@
-const prisma = require('../../prisma');
-const { phoneRegex, emailRegex } = require('../../utils/regex');
+import prisma from '../../prisma.js';
+import { phoneRegex, emailRegex } from '../../utils/regex.js';
 
 const createPatient = async (req, res) => {
   try {
@@ -41,4 +41,4 @@ const createPatient = async (req, res) => {
   }
 };
 
-module.exports = { createPatient };
+export { createPatient };

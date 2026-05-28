@@ -1,4 +1,4 @@
-const prisma = require('../../prisma');
+import prisma from '../../prisma.js';
 
 const updateAppointment = async (req, res) => {
   try {
@@ -19,7 +19,6 @@ const updateAppointment = async (req, res) => {
       });
     }
 
-
     const updated = await prisma.appointment.update({
       where: { id: req.params.id },
       data: { status },
@@ -32,4 +31,4 @@ const updateAppointment = async (req, res) => {
   }
 };
 
-module.exports = { updateAppointment };
+export { updateAppointment };

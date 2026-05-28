@@ -1,4 +1,4 @@
-const prisma = require('../../prisma');
+import prisma from '../../prisma.js';
 
 const getDoctorById = async (req, res) => {
   try {
@@ -16,4 +16,4 @@ const getDoctorById = async (req, res) => {
   }
 };
 
-module.exports = { getDoctorById };
+export { getDoctorById };

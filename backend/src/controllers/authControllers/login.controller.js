@@ -1,6 +1,6 @@
-const prisma = require('../../prisma');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import prisma from '../../prisma.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const loginController = async (req, res) => {
@@ -46,4 +46,4 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { loginController };
+export { loginController };

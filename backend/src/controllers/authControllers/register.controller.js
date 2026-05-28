@@ -1,6 +1,6 @@
-const prisma = require('../../prisma');
-const bcrypt = require('bcryptjs');
-const { emailRegex, passwordRegex } = require('../../utils/regex');
+import prisma from '../../prisma.js';
+import bcrypt from 'bcryptjs';
+import { emailRegex, passwordRegex } from '../../utils/regex.js';
 
 const registerController = async (req, res) => {
   try {
@@ -9,8 +9,6 @@ const registerController = async (req, res) => {
     const allowedRoles = ["RECEPTIONIST", "DOCTOR"];
     const safeRole = allowedRoles.includes(role) ? role : "RECEPTIONIST";
 
-    // Basic email regex (can be replaced with a validator library)
-   
     if (!email || !password || !name) {
       return res.status(400).json({
         error: "All fields are required",
@@ -69,4 +67,4 @@ const registerController = async (req, res) => {
   }
 };
 
-module.exports = { registerController };
+export { registerController };

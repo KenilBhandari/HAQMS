@@ -1,4 +1,4 @@
-const prisma = require('../../prisma');
+import prisma from '../../prisma.js';
 
 const getQueue = async (req, res) => {
   try {
@@ -24,4 +24,4 @@ const getQueue = async (req, res) => {
   }
 };
 
-module.exports = { getQueue };
+export { getQueue };

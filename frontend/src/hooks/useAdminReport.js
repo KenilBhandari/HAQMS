@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import { getDoctorStats } from '@/services/reports';
 import { searchDoctors } from '@/services/doctors';
 
@@ -24,7 +25,7 @@ export function useAdminReport(baseUrl, token, setDoctorsList) {
       if (data.success && Array.isArray(data.doctors)) {
         if (setDoctorsList) setDoctorsList(data.doctors);
       } else {
-        alert(`API Error: ${data.sqlMessage || data.error}`);
+        toast.error(data.sqlMessage || data.error);
       }
     } catch (e) {
       console.error(e);

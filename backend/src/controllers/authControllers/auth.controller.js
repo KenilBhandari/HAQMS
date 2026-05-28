@@ -1,4 +1,4 @@
-const prisma = require('../../prisma');
+import prisma from '../../prisma.js';
 
 const authController = async (req, res) => {
   try {
@@ -21,4 +21,4 @@ const authController = async (req, res) => {
   }
 };
 
-module.exports = { authController };
+export { authController };

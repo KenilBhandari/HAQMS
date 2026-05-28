@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/context/AuthContext';
 
 const inter = Inter({
@@ -20,6 +21,13 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.variable} font-sans min-h-screen gradient-bg`}>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: { fontSize: '14px', fontWeight: 600 },
+          }}
+        />
         <AuthProvider>
           {children}
         </AuthProvider>

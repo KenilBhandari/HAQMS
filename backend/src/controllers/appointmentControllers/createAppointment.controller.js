@@ -1,4 +1,4 @@
-const prisma = require("../../prisma");
+import prisma from "../../prisma.js";
 
 const createAppointment = async (req, res) => {
   try {
@@ -82,4 +82,4 @@ const createAppointment = async (req, res) => {
   }
 };
 
-module.exports = { createAppointment };
+export { createAppointment };

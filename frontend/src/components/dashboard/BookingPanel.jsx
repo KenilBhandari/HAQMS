@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useDashboard } from '@/context/DashboardContext';
+import toast from 'react-hot-toast';
 import {
   CalendarDays, Activity,
 } from 'lucide-react';
@@ -203,7 +204,7 @@ export default function BookingPanel() {
               <button
                 onClick={() => {
                   if (!walkinPatientId || !walkinDoctorId) {
-                    alert('Select patient and doctor first');
+                    toast.error('Select patient and doctor first');
                     return;
                   }
                   handleQueueCheckin(walkinPatientId, walkinDoctorId);

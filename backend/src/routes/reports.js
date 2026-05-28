@@ -1,10 +1,10 @@
-const express = require('express');
-const { authenticate } = require('../middleware/auth');
-const { getDoctorReport } = require('../controllers/reportControllers/getDoctorReport.controller');
+import express from 'express';
+import { authenticate } from '../middleware/auth.js';
+import { getDoctorReport } from '../controllers/reportControllers/getDoctorReport.controller.js';
 
 const router = express.Router();
 
 // GET /api/reports/doctor-stats
 router.get('/doctor-stats', authenticate, getDoctorReport);
 
-module.exports = router;
+export default router;

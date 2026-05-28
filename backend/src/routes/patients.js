@@ -1,9 +1,9 @@
-const express = require('express');
-const { authenticate, authorize } = require('../middleware/auth');
-const { getPatients } = require('../controllers/patientControllers/getPatients.controller');
-const { getPatientById } = require('../controllers/patientControllers/getPatientById.controller');
-const { createPatient } = require('../controllers/patientControllers/createPatient.controller');
-const { deletePatient } = require('../controllers/patientControllers/deletePatient.controller');
+import express from 'express';
+import { authenticate, authorize } from '../middleware/auth.js';
+import { getPatients } from '../controllers/patientControllers/getPatients.controller.js';
+import { getPatientById } from '../controllers/patientControllers/getPatientById.controller.js';
+import { createPatient } from '../controllers/patientControllers/createPatient.controller.js';
+import { deletePatient } from '../controllers/patientControllers/deletePatient.controller.js';
 
 const router = express.Router();
 
@@ -19,4 +19,4 @@ router.post('/', authenticate, authorize(['RECEPTIONIST', 'ADMIN']), createPatie
 // DELETE /api/patients/:id
 router.delete('/:id', authenticate, authorize(['ADMIN']), deletePatient);
 
-module.exports = router;
+export default router;

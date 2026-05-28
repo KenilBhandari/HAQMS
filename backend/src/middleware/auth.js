@@ -1,7 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Authentication middleware
 const authenticate = (req, res, next) => {
   if (!JWT_SECRET) {
     return res.status(500).json({ error: "Internal Server Error" });
@@ -20,10 +19,7 @@ const authenticate = (req, res, next) => {
   const token = parts[1];
 
   try {
-   
     const decoded = jwt.verify(token, JWT_SECRET); 
-    
-    // Add user details to request object
     req.user = decoded;
     next();
   } catch (error) {
@@ -32,7 +28,6 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// Role authorization middleware
 const authorize = (roles = []) => {
   if (typeof roles === 'string') {
     roles = [roles];
@@ -43,7 +38,6 @@ const authorize = (roles = []) => {
       return res.status(401).json({ error: 'Unauthorized. User context missing.' });
     }
 
-    // Role-based verification
     if (roles.length && !roles.includes(req.user.role)) {
       return res.status(403).json({ error: `Access Denied` });
     }
@@ -66,8 +60,4 @@ const authorizeAdminOnlyLegacy = (req, res, next) => {
   next();
 };
 
-module.exports = {
-  authenticate,
-  authorize,
-  authorizeAdminOnlyLegacy,
-};
+export { authenticate, authorize, authorizeAdminOnlyLegacy };

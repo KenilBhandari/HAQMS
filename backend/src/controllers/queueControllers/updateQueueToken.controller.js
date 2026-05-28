@@ -1,4 +1,4 @@
-const prisma = require("../../prisma");
+import prisma from "../../prisma.js";
 
 const updateQueueToken = async (req, res) => {
   try {
@@ -34,4 +34,4 @@ const updateQueueToken = async (req, res) => {
   }
 };
 
-module.exports = { updateQueueToken };
+export { updateQueueToken };

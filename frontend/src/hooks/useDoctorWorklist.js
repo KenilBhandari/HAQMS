@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { getAppointments, updateAppointment } from '@/services/appointments';
 import { getQueue, updateQueueToken } from '@/services/queue';
 
@@ -36,7 +37,7 @@ export function useDoctorWorklist(baseUrl, token, doctorsList, user) {
       if (data.success) {
         fetchDoctorWorklist();
       } else {
-        alert(`Error: ${data.error || 'Failed to update status'}`);
+        toast.error(data.error || 'Failed to update status');
       }
     } catch (e) {
       console.error(e);
@@ -49,7 +50,7 @@ export function useDoctorWorklist(baseUrl, token, doctorsList, user) {
       if (data.success) {
         fetchDoctorWorklist();
       } else {
-        alert(`Error: ${data.error || 'Failed to complete appointment'}`);
+        toast.error(data.error || 'Failed to complete appointment');
       }
     } catch (e) {
       console.error(e);

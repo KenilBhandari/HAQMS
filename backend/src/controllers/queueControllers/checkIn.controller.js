@@ -1,4 +1,4 @@
-const prisma = require("../../prisma");
+import prisma from "../../prisma.js";
 
 class CheckInError extends Error {
   constructor(statusCode, message) {
@@ -62,12 +62,6 @@ const checkIn = async (req, res) => {
             data: { status: 'CALLING' },
             include: tokenIncludes,
           });
-          if (appointmentId) {
-            await tx.appointment.update({
-              where: { id: appointmentId },
-              data: { status: 'COMPLETED' },
-            });
-          }
           return { token: updated, message: 'Patient called for consultation' };
         }
 
@@ -76,12 +70,6 @@ const checkIn = async (req, res) => {
           data: { tokenNumber, patientId, doctorId, appointmentId: appointmentId ?? null, status: 'CALLING' },
           include: tokenIncludes,
         });
-        if (appointmentId) {
-          await tx.appointment.update({
-            where: { id: appointmentId },
-            data: { status: 'COMPLETED' },
-          });
-        }
         return { token: created, message: 'Patient called for consultation' };
       }
 
@@ -110,4 +98,4 @@ const checkIn = async (req, res) => {
   }
 };
 
-module.exports = { checkIn };
+export { checkIn };

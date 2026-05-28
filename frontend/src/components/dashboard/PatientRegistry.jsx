@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useDashboard } from '@/context/DashboardContext';
+import toast from 'react-hot-toast';
 import {
   Search, ClipboardList, UserPlus, Trash2,
 } from 'lucide-react';
@@ -90,13 +91,13 @@ export default function PatientRegistry() {
       });
       const data = await res.json();
       if (res.ok) {
-        alert(data.message || 'Patient deleted.');
+        toast.success(data.message || 'Patient deleted.');
         fetchPatients(pagination.page);
       } else {
-        alert(`Error: ${data.error || 'Unauthorized deletion!'}`);
+        toast.error(data.error || 'Unauthorized deletion!');
       }
     } catch (err) {
-      alert(`Error: ${err.message}`);
+      toast.error(err.message);
     }
   };
 

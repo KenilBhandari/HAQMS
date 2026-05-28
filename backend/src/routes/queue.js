@@ -1,8 +1,8 @@
-const express = require('express');
-const { authenticate, authorize } = require('../middleware/auth');
-const { getQueue } = require('../controllers/queueControllers/getQueue.controller');
-const { checkIn } = require('../controllers/queueControllers/checkIn.controller');
-const { updateQueueToken } = require('../controllers/queueControllers/updateQueueToken.controller');
+import express from 'express';
+import { authenticate, authorize } from '../middleware/auth.js';
+import { getQueue } from '../controllers/queueControllers/getQueue.controller.js';
+import { checkIn } from '../controllers/queueControllers/checkIn.controller.js';
+import { updateQueueToken } from '../controllers/queueControllers/updateQueueToken.controller.js';
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.post('/checkin', authenticate, authorize(['RECEPTIONIST', 'ADMIN', 'DOCTO
 // PATCH /api/queue/:id
 router.patch('/:id', authenticate, authorize(['DOCTOR', 'ADMIN']), updateQueueToken);
 
-module.exports = router;
+export default router;

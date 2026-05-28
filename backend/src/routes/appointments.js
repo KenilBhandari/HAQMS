@@ -1,8 +1,8 @@
-const express = require('express');
-const { authenticate, authorize } = require('../middleware/auth');
-const { getAppointments } = require('../controllers/appointmentControllers/getAppointments.controller');
-const { createAppointment } = require('../controllers/appointmentControllers/createAppointment.controller');
-const { updateAppointment } = require('../controllers/appointmentControllers/updateAppointment.controller');
+import express from 'express';
+import { authenticate, authorize } from '../middleware/auth.js';
+import { getAppointments } from '../controllers/appointmentControllers/getAppointments.controller.js';
+import { createAppointment } from '../controllers/appointmentControllers/createAppointment.controller.js';
+import { updateAppointment } from '../controllers/appointmentControllers/updateAppointment.controller.js';
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.post('/', authenticate, authorize(['RECEPTIONIST', 'ADMIN', 'DOCTOR']), c
 // PATCH /api/appointments
 router.patch('/:id', authenticate, authorize(['DOCTOR', 'ADMIN']), updateAppointment);
 
-module.exports = router;
+export default router;
