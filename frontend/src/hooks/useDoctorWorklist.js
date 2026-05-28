@@ -24,11 +24,11 @@ export function useDoctorWorklist(baseUrl, token, doctorsList, user) {
   }, [baseUrl, token, doctorsList, user]);
 
   useEffect(() => {
-    if (user?.role === 'DOCTOR' && doctorsList.length > 0) {
+    if (user?.role === 'DOCTOR' && doctorsList.length > 0 && token) {
       const id = setTimeout(() => fetchDoctorWorklist(), 0);
       return () => clearTimeout(id);
     }
-  }, [doctorsList, user, fetchDoctorWorklist]);
+  }, [doctorsList, user, token, fetchDoctorWorklist]);
 
   const handleUpdateQueueStatus = useCallback(async (tokenId, newStatus) => {
     try {

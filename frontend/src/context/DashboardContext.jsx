@@ -1,12 +1,13 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { usePatients } from '@/hooks/usePatients';
 import { useDoctors } from '@/hooks/useDoctors';
 import { useDoctorWorklist } from '@/hooks/useDoctorWorklist';
 import { useAdminReport } from '@/hooks/useAdminReport';
 import { checkIn } from '@/services/queue';
+import { getAppointments } from '@/services/appointments';
 
 const DashboardContext = createContext(null);
 
@@ -24,6 +25,18 @@ export function DashboardProvider({ children }) {
   const [checkinMessage, setCheckinMessage] = useState('');
   const [walkinPatientId, setWalkinPatientId] = useState('');
   const [walkinDoctorId, setWalkinDoctorId] = useState('');
+  const [appointmentsList, setAppointmentsList] = useState([]);
+
+  const fetchAppointments = useCallback(async () => {
+    try {
+      const data = await getAppointments(API_BASE_URL, token);
+      if (data.success) {
+        setAppointmentsList(data.appointments);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [API_BASE_URL, token]);
 
   const handleQueueCheckin = async (patientId, doctorId, appointmentId = null) => {
     setCheckinMessage('');
@@ -46,9 +59,10 @@ export function DashboardProvider({ children }) {
 
   useEffect(() => {
     if (user && (user.role === 'RECEPTIONIST' || user.role === 'ADMIN') && token) {
-      fetchPatients(1);
+      const id = setTimeout(() => fetchAppointments(), 0);
+      return () => clearTimeout(id);
     }
-  }, [user, token, fetchPatients]);
+  }, [user, token, fetchAppointments]);
 
   const value = {
     user, token, API_BASE_URL,
@@ -59,6 +73,8 @@ export function DashboardProvider({ children }) {
     checkinMessage, setCheckinMessage,
     walkinPatientId, setWalkinPatientId,
     walkinDoctorId, setWalkinDoctorId,
+    appointmentsList, setAppointmentsList,
+    fetchAppointments,
     handleQueueCheckin,
   };
 

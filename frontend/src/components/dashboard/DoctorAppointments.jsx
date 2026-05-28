@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDashboard } from '@/context/DashboardContext';
 import Link from 'next/link';
 import {
-  CalendarDays, ArrowRight,
+  CalendarDays, ArrowRight, RefreshCw,
 } from 'lucide-react';
 
 export default function DoctorAppointments() {
@@ -14,6 +14,7 @@ export default function DoctorAppointments() {
     user,
     handleQueueCheckin,
     handleCompleteAppointment,
+    fetchDoctorWorklist,
   } = useDashboard();
 
   const [selectedPatientHistory, setSelectedPatientHistory] = useState(null);
@@ -24,6 +25,13 @@ export default function DoctorAppointments() {
         <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
           <CalendarDays className="h-5 w-5 text-teal-600" />
           Scheduled Daily Bookings List
+          <button
+            onClick={fetchDoctorWorklist}
+            className="ml-auto text-xs px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 transition-colors flex items-center gap-1 font-bold"
+          >
+            <RefreshCw className="h-3 w-3" />
+            Refresh
+          </button>
         </h3>
 
         {doctorAppointments.length === 0 ? (

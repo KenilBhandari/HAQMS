@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { getPatients } from '@/services/patients';
 
 export function usePatients(baseUrl, token) {
@@ -7,11 +7,21 @@ export function usePatients(baseUrl, token) {
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
   const [search, setSearch] = useState('');
   const [gender, setGender] = useState('All');
+  const searchRef = useRef(search);
+  const genderRef = useRef(gender);
 
-  const fetchPatients = useCallback(async (page = 1) => {
+  useEffect(() => {
+    searchRef.current = search;
+  }, [search]);
+
+  useEffect(() => {
+    genderRef.current = gender;
+  }, [gender]);
+
+  const fetchPatients = useCallback(async (page = 1, nextSearch = searchRef.current, nextGender = genderRef.current) => {
     setLoading(true);
     try {
-      const data = await getPatients(baseUrl, token, { page, search, gender });
+      const data = await getPatients(baseUrl, token, { page, search: nextSearch, gender: nextGender });
       if (data.success) {
         setPatients(data.patients);
         setPagination({
@@ -25,7 +35,7 @@ export function usePatients(baseUrl, token) {
     } finally {
       setLoading(false);
     }
-  }, [baseUrl, token, search, gender]);
+  }, [baseUrl, token]);
 
   return {
     patients, setPatients,

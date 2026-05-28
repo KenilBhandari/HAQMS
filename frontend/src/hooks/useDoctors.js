@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { getDoctors, searchDoctors } from '@/services/doctors';
 
 export function useDoctors(baseUrl, token) {
   const [doctorsList, setDoctorsList] = useState([]);
+  const didInitialFetchRef = useRef(false);
 
   const fetchDoctorsDropdown = useCallback(async () => {
     try {
@@ -26,5 +27,15 @@ export function useDoctors(baseUrl, token) {
     }
   }, [baseUrl, token]);
 
-  return { doctorsList, setDoctorsList, fetchDoctorsDropdown, searchPhysicians };
+  useEffect(() => {
+    didInitialFetchRef.current = false;
+  }, [baseUrl, token]);
+
+  const fetchDoctorsOnce = useCallback(async () => {
+    if (didInitialFetchRef.current) return;
+    didInitialFetchRef.current = true;
+    await fetchDoctorsDropdown();
+  }, [fetchDoctorsDropdown]);
+
+  return { doctorsList, setDoctorsList, fetchDoctorsDropdown: fetchDoctorsOnce, searchPhysicians };
 }

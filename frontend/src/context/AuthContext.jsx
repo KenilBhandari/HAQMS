@@ -13,6 +13,15 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
+  const decodeTokenPayload = (jwt) => {
+    const payload = jwt.split('.')[1];
+    if (!payload) throw new Error('Invalid token');
+
+    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=');
+    return JSON.parse(atob(padded));
+  };
+
   const logout = useCallback(() => {
     localStorage.removeItem('haqms_token');
     localStorage.removeItem('haqms_user');
@@ -28,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     Promise.resolve().then(() => {
       if (storedToken && storedUser) {
         try {
-          const payload = JSON.parse(atob(storedToken.split('.')[1]));
+          const payload = decodeTokenPayload(storedToken);
           if (payload.exp * 1000 < Date.now()) {
             localStorage.removeItem('haqms_token');
             localStorage.removeItem('haqms_user');
@@ -37,8 +46,9 @@ export const AuthProvider = ({ children }) => {
             setUser(JSON.parse(storedUser));
           }
         } catch (e) {
-          console.error('Failed to parse user details from localStorage', e);
-          logout();
+          console.error('Failed to restore auth from localStorage', e);
+          localStorage.removeItem('haqms_token');
+          localStorage.removeItem('haqms_user');
         }
       }
       setLoading(false);

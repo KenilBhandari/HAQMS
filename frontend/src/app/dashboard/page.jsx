@@ -18,9 +18,20 @@ export default function Dashboard() {
   const { checkinMessage, setCheckinMessage } = useDashboard();
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState(
-    user?.role === 'ADMIN' ? 'reports' : user?.role === 'RECEPTIONIST' ? 'patients' : 'appointments'
-  );
+  const [activeTab, setActiveTab] = useState(null);
+
+  useEffect(() => {
+    if (!user) return;
+    Promise.resolve().then(() => {
+      setActiveTab(
+        user.role === 'ADMIN'
+          ? 'reports'
+          : user.role === 'RECEPTIONIST'
+            ? 'patients'
+            : 'appointments'
+      );
+    });
+  }, [user]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -84,12 +95,12 @@ export default function Dashboard() {
           </div>
         )}
 
-        {activeTab === 'patients' && <PatientRegistry />}
-        {activeTab === 'book' && <BookingPanel />}
-        {activeTab === 'appointments' && <DoctorAppointments />}
-        {activeTab === 'queue' && <DoctorQueue />}
-        {activeTab === 'reports' && <AdminReports />}
-        {activeTab === 'physicians' && <PhysicianRegistry />}
+        <div className={activeTab === 'patients' ? '' : 'hidden'}><PatientRegistry /></div>
+        <div className={activeTab === 'book' ? '' : 'hidden'}><BookingPanel /></div>
+        <div className={activeTab === 'appointments' ? '' : 'hidden'}><DoctorAppointments /></div>
+        <div className={activeTab === 'queue' ? '' : 'hidden'}><DoctorQueue /></div>
+        <div className={activeTab === 'reports' ? '' : 'hidden'}><AdminReports /></div>
+        <div className={activeTab === 'physicians' ? '' : 'hidden'}><PhysicianRegistry /></div>
       </main>
     </div>
   );
