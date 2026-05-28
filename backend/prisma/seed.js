@@ -1,9 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-const bcrypt = require('bcryptjs');
+import prisma from '../src/prisma.js';
+import bcrypt from 'bcryptjs';
 
 async function main() {
-
   const hashedPassword = await bcrypt.hash('password123', 10);
 
   await prisma.queueToken.deleteMany();
@@ -13,7 +11,6 @@ async function main() {
     where: { id: { notIn: ['clark-kent', 'bruce-wayne'] } },
   });
 
-  // ── Users ──
   const admin = await prisma.user.upsert({
     where: { email: 'admin@haqms.com' },
     update: {},
@@ -47,7 +44,6 @@ async function main() {
     },
   });
 
-  // ── Doctor Profile ──
   const doctor = await prisma.doctor.upsert({
     where: { userId: doctorUser.id },
     update: {},
@@ -63,7 +59,6 @@ async function main() {
     },
   });
 
-  // Additional doctors
   const doctor2 = await prisma.doctor.create({
     data: {
       name: 'Dr. Jane Doe',
@@ -88,7 +83,6 @@ async function main() {
     },
   });
 
-  // ── Patients ──
   const patient1 = await prisma.patient.upsert({
     where: { id: 'clark-kent' },
     update: {},
@@ -150,7 +144,6 @@ async function main() {
     },
   });
 
-  // ── Appointments ──
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -194,7 +187,6 @@ async function main() {
     },
   });
 
-  // ── Queue Tokens ──
   await prisma.queueToken.create({
     data: {
       tokenNumber: 1,
