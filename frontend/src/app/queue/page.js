@@ -1,78 +1,46 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import Navbar from '@/components/common/Navbar';
 import { Activity, Bell, Monitor, RefreshCw, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useQueue } from '@/hooks/useQueue';
 
 export default function QueueMonitor() {
-  const [tokens, setTokens] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  
-  // Duplicated config state just to add minor code smell
-  const [refreshCount, setRefreshCount] = useState(0);
+  const { token, API_BASE_URL, loading: authLoading } = useAuth();
+  const { tokens, loading, error, refreshCount, groupedTokens } = useQueue(API_BASE_URL, token);
 
-  // HARDCODED API BASE URL: Duplicated from AuthContext (code duplication smell)
-  const API_BASE_URL = 'http://localhost:5000/api';
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <main className="flex-1 flex items-center justify-center">
+          <p className="text-sm font-semibold text-slate-400">Loading...</p>
+        </main>
+      </div>
+    );
+  }
 
-  const fetchQueueData = async () => {
-    try {
-      // Insecure: Fetches queue without checking credentials (it's a public dashboard, which is fine, 
-      // but it uses the hardcoded API domain)
-      const res = await fetch(`${API_BASE_URL}/queue`);
-      if (!res.ok) {
-        throw new Error('Failed to retrieve active token queue.');
-      }
-      const data = await res.json();
-      setTokens(data);
-      setError('');
-    } catch (err) {
-      console.error('Queue poll fetch error:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    // Initial fetch
-    fetchQueueData();
-
-    // MEMORY LEAK BUG:
-    // This setInterval has NO cleanup function (does not return clearInterval).
-    // Every time this page is mounted, a new background polling timer is spun up.
-    // If the candidate navigates between Dashboard and Queue multiple times,
-    // dozens of parallel intervals will poll the database, causing memory bloat,
-    // state update crashes on unmounted components, and heavy server load.
-    const intervalId = setInterval(() => {
-      console.log(`[POLL] Active Queue Poll #${refreshCount + 1} firing...`);
-      fetchQueueData();
-      setRefreshCount((prev) => prev + 1);
-    }, 3000);
-
-    // Junior Developer Note: "Interval created, will run forever to keep dashboard fully synced!"
-    // Missing: return () => clearInterval(intervalId);
-  }, []); // Note that refreshCount dependency is missing too, causing stale closure on log!
-
-  // Group tokens by doctor
-  const groupedTokens = tokens.reduce((groups, token) => {
-    const docId = token.doctorId;
-    if (!groups[docId]) {
-      groups[docId] = {
-        doctorName: token.doctor.name,
-        specialization: token.doctor.specialization,
-        calling: null,
-        waiting: [],
-      };
-    }
-    
-    if (token.status === 'CALLING') {
-      groups[docId].calling = token;
-    } else if (token.status === 'WAITING') {
-      groups[docId].waiting.push(token);
-    }
-    return groups;
-  }, {});
+  if (!token) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <main className="flex-1 flex flex-col items-center justify-center p-6">
+          <div className="glass p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md text-center max-w-md">
+            <Activity className="h-10 w-10 text-slate-400 mx-auto mb-4" />
+            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Authentication Required</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+              Please log in to view the live queue monitor.
+            </p>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center px-4 py-2 bg-teal-600 text-white font-bold text-sm rounded-lg hover:bg-teal-700 transition-colors"
+            >
+              Go to Login
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

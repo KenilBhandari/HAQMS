@@ -1,47 +1,62 @@
-Frontend Audit Results
-Here are all 26 issues found across the 8 frontend JS files. I've grouped them for efficient implementation:
-🔴 Critical (app crashes)
-#	Issue
-1	medicalHistory null crash — toUpperCase() on null
-2	Link used but never imported (ReferenceError)
-🟠 High (wrong data / memory leak)
-#	Issue
-3	data.data.token / data.data.user — backend returns flat { success, token, user }
-4	data.data in doctor search — backend doesn't nest under .data
-5	setInterval no clearInterval — memory leak on every nav
-6	Hardcoded localhost:5000/api duplicated in 2 files
-7	/patients/[id]/history-records route doesn't exist (404)
-8	Queue fetch sets raw response object as tokens array
-9	Login response parsed with wrong shape, login broken
-🟡 Medium (inconsistent, inefficient)
-#	Issue
-10	res.ok vs data.success — inconsistent validation (10+ endpoints)
-11	No env variables (NEXT_PUBLIC_API_URL)
-12	Stale closure — refreshCount misssing from deps
-13	No debounce on patient search (API per keystroke)
-14	localStorage token storage (XSS vector)
-15	No token expiry check on init
-16	document.getElementById() in React
-17	Navigation guard race condition on mount
-🟢 Low
-#	Issue
-18	Login field uses type="text" instead of type="email"
-19	Check-in always uses doctorsList[0]
-20	No server-side token invalidation on logout
-Proposed Implementation Plan
-Phase 1 — Fix the crashes & broken login (issues 1, 2, 3, 4, 6, 7, 9)
-1. Add Link import to dashboard/page.js
-2. Add optional chaining on medicalHistory
-3. Fix AuthContext.js login/register response destructuring (data.data → flat)
-4. Fix doctor search data.data usage
-5. Add NEXT_PUBLIC_API_URL env var, create API client helper, replace hardcoded URLs
-6. Either build history-records page or remove the dead link
-Phase 2 — Fix queue & data flow (issues 5, 8, 10, 12)
-1. Add clearInterval cleanup in queue page
-2. Fix queue fetch to extract .queue from response wrapper
-3. Standardize all API calls to check data.success first
-Phase 3 — Polish (issues 13, 15, 16, 17, 18, 19)
-1. Add debounce hook for search inputs
-2. Add token expiry check
-3. Replace document.getElementById with React state
-4. Fix the remaining minor issues
+I checked the frontend code-bearing files and ran npm run lint --prefix frontend. The
+  frontend is not fully clean yet. It has a few real blockers, plus several lower-priority
+  consistency issues.
+
+  Top Issues
+
+  1. frontend/src/app/dashboard/page.js is currently a React hooks bug and a logic bug.
+      - It reads authLoading from useAuth(), but AuthContext exposes loading, not
+        authLoading.
+      - It returns before useState, so hooks are called conditionally.
+      - Lint confirms this: react-hooks/rules-of-hooks at frontend/src/app/dashboard/
+        page.js:29.
+      - Impact: the dashboard route is unstable and may fail build/lint or behave
+        incorrectly on auth transitions.
+  2. frontend/src/context/AuthContext.js still stores JWTs in localStorage.
+      - See frontend/src/context/AuthContext.js:17 and frontend/src/context/
+        AuthContext.js:61.
+      - This is an XSS token-theft risk.
+      - There’s also a lint issue for setting state inside an effect at frontend/src/
+        context/AuthContext.js:27, and logout() is referenced before its declaration in
+        the effect at frontend/src/context/AuthContext.js:32.
+      - Impact: security risk plus lint/build noise.
+  3. The frontend data contract is still fragile in the hooks/services layer.
+      - frontend/src/hooks/useQueue.js:13-15 expects { success, tokens }.
+      - frontend/src/hooks/useDoctorWorklist.js:19-20 expects wrapped success payloads
+        too.
+      - frontend/src/context/DashboardContext.js:28-33 also assumes checkIn() returns
+        success and token.
+      - The shared API helper in frontend/src/services/api.js just returns r.json(), so
+        the frontend has no unified HTTP/error normalization.
+      - Impact: if any endpoint shape differs, the UI silently breaks or stays empty.
+  4. Several frontend files currently fail the React lint rules.
+      - frontend/src/app/patients/[id]/history-records/page.js:21 sets state synchronously
+        inside an effect.
+      - frontend/src/hooks/useQueue.js:24 does the same.
+      - frontend/src/hooks/useDoctorWorklist.js:26 does the same.
+      - frontend/src/hooks/useDebounce.js:4 mutates a ref during render.
+      - Lint also warns about missing deps in frontend/src/components/dashboard/
+        PatientRegistry.js:22 and frontend/src/context/DashboardContext.js:40.
+      - Impact: npm run lint --prefix frontend currently fails with 7 errors and 5
+        warnings.
+
+  Lower Priority / Architecture
+
+  5. The frontend still has duplicated patterns and stale migration artifacts.
+      - frontend/src/components/dashboard/PatientRegistry.js and frontend/src/components/
+        dashboard/BookingPanel.js still use inline fetch instead of the service layer.
+      - frontend/src/lib/constants.js still defines TOKEN_STORAGE_KEY and
+        USER_STORAGE_KEY, but the auth flow is still hardcoded in AuthContext.
+      - frontend/src/app/layout.js and frontend/src/app/globals.css are visually coherent,
+        but the design language is still conservative and largely based on Inter +
+        glassmorphism. Not broken, just not especially distinct.
+
+  What I verified
+
+  - npm run lint --prefix frontend fails right now.
+  - The current frontend does have some fixes already in place:
+      - queue interval cleanup exists
+      - optional chaining is used in the patient history page
+      - env-based API base URL is now present
+  - But the frontend still has real correctness and security issues.
+
