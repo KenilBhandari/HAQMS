@@ -4,4 +4,4 @@ export const getDoctors = (baseUrl, token) =>
   get(baseUrl, '/doctors', token);
 
 export const searchDoctors = (baseUrl, token, query) =>
-  get(baseUrl, `/doctors?search=${query}`, token);
+  get(baseUrl, `/doctors?search=${encodeURIComponent(query)}`, token);

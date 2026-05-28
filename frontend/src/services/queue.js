@@ -1,7 +1,7 @@
 import { get, post, patch } from './api';
 
 export const getQueue = (baseUrl, token, { doctorId } = {}) =>
-  get(baseUrl, doctorId ? `/queue?doctorId=${doctorId}` : '/queue', token);
+  get(baseUrl, doctorId ? `/queue?doctorId=${encodeURIComponent(doctorId)}` : '/queue', token);
 
 export const checkIn = (baseUrl, token, data) =>
   post(baseUrl, '/queue/checkin', token, data);

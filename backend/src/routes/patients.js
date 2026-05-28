@@ -14,7 +14,7 @@ router.get('/', authenticate, getPatients);
 router.get('/:id', authenticate, getPatientById);
 
 // POST /api/patients
-router.post('/', authenticate, createPatient);
+router.post('/', authenticate, authorize(['RECEPTIONIST', 'ADMIN']), createPatient);
 
 // DELETE /api/patients/:id
 router.delete('/:id', authenticate, authorize(['ADMIN']), deletePatient);

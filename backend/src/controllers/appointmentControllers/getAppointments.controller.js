@@ -8,10 +8,13 @@ const getAppointments = async (req, res) => {
     const where = {};
     
     if (doctorId) where.doctorId = doctorId;
-    if (status && !validStatuses.includes(status)) {
-      return res.status(400).json({
-        error: "Invalid status",
-      });
+    if (status) {
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          error: "Invalid status",
+        });
+      }
+      where.status = status;
     }
 
     const appointments = await prisma.appointment.findMany({

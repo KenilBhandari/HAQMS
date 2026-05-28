@@ -6,6 +6,9 @@ const registerController = async (req, res) => {
   try {
     const { email, password, name, role } = req.body;
 
+    const allowedRoles = ["RECEPTIONIST", "DOCTOR"];
+    const safeRole = allowedRoles.includes(role) ? role : "RECEPTIONIST";
+
     // Basic email regex (can be replaced with a validator library)
    
     if (!email || !password || !name) {
@@ -42,7 +45,7 @@ const registerController = async (req, res) => {
         email,
         password: hashedPassword,
         name,
-        role: role || "RECEPTIONIST",
+        role: safeRole,
       },
     });
 
