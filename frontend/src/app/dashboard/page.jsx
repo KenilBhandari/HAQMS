@@ -12,6 +12,7 @@ import DoctorAppointments from '@/components/dashboard/DoctorAppointments';
 import DoctorQueue from '@/components/dashboard/DoctorQueue';
 import AdminReports from '@/components/dashboard/AdminReports';
 import PhysicianRegistry from '@/components/dashboard/PhysicianRegistry';
+import StaffManager from '@/components/dashboard/StaffManager';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -62,6 +63,9 @@ export default function Dashboard() {
               <button onClick={() => setActiveTab('physicians')} className={tabClass('physicians')}>
                 Physician Registry
               </button>
+              <button onClick={() => setActiveTab('staff')} className={tabClass('staff')}>
+                Staff Management
+              </button>
             </>
           )}
 
@@ -101,6 +105,7 @@ export default function Dashboard() {
         <div className={activeTab === 'queue' ? '' : 'hidden'}><DoctorQueue /></div>
         <div className={activeTab === 'reports' ? '' : 'hidden'}><AdminReports /></div>
         <div className={activeTab === 'physicians' ? '' : 'hidden'}><PhysicianRegistry /></div>
+        <div className={activeTab === 'staff' ? '' : 'hidden'}><StaffManager /></div>
       </main>
     </div>
   );
