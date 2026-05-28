@@ -18,6 +18,9 @@ export function DashboardProvider({ children }) {
   const doctorWorklistHook = useDoctorWorklist(API_BASE_URL, token, doctorsHook.doctorsList, user);
   const adminReportHook = useAdminReport(API_BASE_URL, token, doctorsHook.setDoctorsList);
 
+  const { fetchDoctorsDropdown } = doctorsHook;
+  const { fetchPatients } = patientsHook;
+
   const [checkinMessage, setCheckinMessage] = useState('');
   const [walkinPatientId, setWalkinPatientId] = useState('');
   const [walkinDoctorId, setWalkinDoctorId] = useState('');
@@ -38,14 +41,14 @@ export function DashboardProvider({ children }) {
   };
 
   useEffect(() => {
-    if (token) doctorsHook.fetchDoctorsDropdown();
-  }, [token]);
+    if (token) fetchDoctorsDropdown();
+  }, [token, fetchDoctorsDropdown]);
 
   useEffect(() => {
     if (user && (user.role === 'RECEPTIONIST' || user.role === 'ADMIN') && token) {
-      patientsHook.fetchPatients(1);
+      fetchPatients(1);
     }
-  }, [user, token]);
+  }, [user, token, fetchPatients]);
 
   const value = {
     user, token, API_BASE_URL,

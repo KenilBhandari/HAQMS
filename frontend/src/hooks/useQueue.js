@@ -23,13 +23,16 @@ export function useQueue(API_BASE_URL, token) {
 
   useEffect(() => {
     if (!token) return;
-    fetchQueueData();
+    const id = setTimeout(() => fetchQueueData(), 0);
     const intervalId = setInterval(() => {
       fetchQueueData();
       setRefreshCount((prev) => prev + 1);
     }, 3000);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearTimeout(id);
+      clearInterval(intervalId);
+    };
   }, [token, fetchQueueData]);
 
   const groupedTokens = useMemo(() => {

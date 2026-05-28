@@ -19,10 +19,7 @@ export default function PatientHistoryRecords() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
 
     const fetchPatient = async () => {
       try {

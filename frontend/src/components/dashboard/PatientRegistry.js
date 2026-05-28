@@ -25,7 +25,7 @@ export default function PatientRegistry() {
       debounceRef.current = setTimeout(() => fetchPatients(1), 300);
     }
     return () => clearTimeout(debounceRef.current);
-  }, [search, gender]);
+  }, [search, gender, fetchPatients, user]);
 
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');

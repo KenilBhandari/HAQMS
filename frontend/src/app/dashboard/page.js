@@ -14,21 +14,21 @@ import AdminReports from '@/components/dashboard/AdminReports';
 import PhysicianRegistry from '@/components/dashboard/PhysicianRegistry';
 
 export default function Dashboard() {
-  const { user, authLoading } = useAuth();
+  const { user, loading } = useAuth();
   const { checkinMessage, setCheckinMessage } = useDashboard();
   const router = useRouter();
 
+  const [activeTab, setActiveTab] = useState(
+    user?.role === 'ADMIN' ? 'reports' : user?.role === 'RECEPTIONIST' ? 'patients' : 'appointments'
+  );
+
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (!loading && !user) {
       router.push('/login');
     }
-  }, [authLoading, user, router]);
+  }, [loading, user, router]);
 
-  if (authLoading || !user) return null;
-
-  const [activeTab, setActiveTab] = useState(
-    user.role === 'ADMIN' ? 'reports' : user.role === 'RECEPTIONIST' ? 'patients' : 'appointments'
-  );
+  if (loading || !user) return null;
 
   const tabClass = (tab) =>
     `py-3.5 px-1 border-b-2 font-bold text-sm transition-all whitespace-nowrap ${

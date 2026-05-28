@@ -25,7 +25,8 @@ export function useDoctorWorklist(baseUrl, token, doctorsList, user) {
 
   useEffect(() => {
     if (user?.role === 'DOCTOR' && doctorsList.length > 0) {
-      fetchDoctorWorklist();
+      const id = setTimeout(() => fetchDoctorWorklist(), 0);
+      return () => clearTimeout(id);
     }
   }, [doctorsList, user, fetchDoctorWorklist]);
 
