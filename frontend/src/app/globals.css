@@ -23,34 +23,11 @@
   --radius: 0.75rem;
 }
 
-.dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-  --popover: #1e293b;
-  --popover-foreground: #f8fafc;
-  --primary: #14b8a6;
-  --primary-foreground: #0f172a;
-  --secondary: #334155;
-  --secondary-foreground: #f8fafc;
-  --muted: #334155;
-  --muted-foreground: #94a3b8;
-  --accent: #0f766e;
-  --accent-foreground: #f8fafc;
-  --destructive: #f87171;
-  --destructive-foreground: #0f172a;
-  --border: #334155;
-  --input: #334155;
-  --ring: #14b8a6;
-}
-
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #f8fafc;
+  color: #0f172a;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom premium styles */
@@ -61,16 +38,10 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.dark .glass {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 .gradient-bg {
   background: radial-gradient(circle at 10% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 40%),
               radial-gradient(circle at 90% 80%, rgba(15, 118, 110, 0.15) 0%, transparent 40%);
+  background-attachment: fixed;
 }
 
 .glow-btn {

@@ -15,20 +15,20 @@ export default function PhysicianRegistry() {
   const [adminSearchQuery, setAdminSearchQuery] = useState('');
 
   return (
-    <div className="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md space-y-6">
+    <div className="glass p-6 rounded-2xl border border-slate-200 shadow-md space-y-6">
       <div>
-        <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+        <h3 className="text-lg font-extrabold text-slate-800 flex items-center gap-2">
           <Award className="h-5 w-5 text-teal-600" />
           Staff Physicians Registry Lookup
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">
+        <p className="text-xs text-slate-700 font-semibold mt-1">
           Search and filter physician records by name.
         </p>
       </div>
 
       <div className="flex gap-4">
         <div className="relative flex-1 rounded-lg shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
             <Search className="h-4 w-4" />
           </div>
           <input
@@ -36,13 +36,13 @@ export default function PhysicianRegistry() {
             value={adminSearchQuery}
             onChange={(e) => setAdminSearchQuery(e.target.value)}
             placeholder="Search physicians by name..."
-            className="block w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            className="block w-full pl-9 pr-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
           />
         </div>
 
         <button
           onClick={() => searchPhysicians(adminSearchQuery)}
-          className="glow-btn px-5 py-2 bg-slate-900 text-white dark:bg-teal-500 dark:text-slate-950 font-bold text-xs rounded-lg hover:bg-slate-800 dark:hover:bg-teal-400 transition-colors"
+          className="glow-btn px-5 py-2 bg-slate-900 text-white font-bold text-xs rounded-lg hover:bg-slate-800 transition-colors"
         >
           Search
         </button>
@@ -52,18 +52,18 @@ export default function PhysicianRegistry() {
         {doctorsList.map((doc) => (
           <div
             key={doc.id}
-            className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-500/5 flex flex-col justify-between"
+            className="p-5 rounded-2xl border border-slate-200 bg-slate-500/5 flex flex-col justify-between"
           >
             <div>
-              <span className="inline-flex px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase bg-teal-500/10 text-teal-600 dark:text-teal-400 mb-2">
+              <span className="inline-flex px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase bg-teal-500/10 text-teal-600 mb-2">
                 {doc.department}
               </span>
-              <h4 className="font-extrabold text-slate-800 dark:text-slate-100">{doc.name}</h4>
-              <p className="text-xs text-slate-400 mt-0.5">{doc.specialization}</p>
+              <h4 className="font-extrabold text-slate-800">{doc.name}</h4>
+              <p className="text-xs text-slate-700 mt-0.5">{doc.specialization}</p>
             </div>
-            <div className="mt-6 pt-3 border-t border-slate-200 dark:border-slate-800/80 flex justify-between items-center text-xs font-semibold text-slate-500">
+            <div className="mt-6 pt-3 border-t border-slate-200 flex justify-between items-center text-xs font-semibold text-slate-700">
               <span>Exp: {doc.experience} yrs</span>
-              <span className="font-bold text-teal-600 dark:text-teal-400">Fee: ${doc.consultationFee}</span>
+              <span className="font-bold text-teal-600">Fee: ${doc.consultationFee}</span>
             </div>
           </div>
         ))}

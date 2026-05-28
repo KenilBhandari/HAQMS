@@ -14,7 +14,7 @@ export default function QueueMonitor() {
     return (
       <div className="min-h-screen flex flex-col">
         <main className="flex-1 flex items-center justify-center">
-          <p className="text-sm font-semibold text-slate-400">Loading...</p>
+          <p className="text-sm font-semibold text-slate-600">Loading...</p>
         </main>
       </div>
     );
@@ -24,10 +24,10 @@ export default function QueueMonitor() {
     return (
       <div className="min-h-screen flex flex-col">
         <main className="flex-1 flex flex-col items-center justify-center p-6">
-          <div className="glass p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md text-center max-w-md">
-            <Activity className="h-10 w-10 text-slate-400 mx-auto mb-4" />
-            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Authentication Required</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+          <div className="glass p-8 rounded-2xl border border-slate-200 shadow-md text-center max-w-md">
+            <Activity className="h-10 w-10 text-slate-600 mx-auto mb-4" />
+            <h2 className="text-lg font-bold text-slate-800 mb-2">Authentication Required</h2>
+            <p className="text-sm text-slate-700 mb-6">
               Please log in to view the live queue monitor.
             </p>
             <Link
@@ -48,27 +48,27 @@ export default function QueueMonitor() {
       
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 sm:p-8">
         {/* Header Dashboard Banner */}
-        <div className="glass p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="glass p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-200 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-teal-500/10 text-teal-600 dark:text-teal-400 rounded-xl">
+            <div className="p-3 bg-teal-500/10 text-teal-600 rounded-xl">
               <Monitor className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <h1 className="text-2xl font-extrabold text-slate-800 flex items-center gap-2">
                 Live Public Monitor Board
               </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-400 font-semibold mt-1">
+              <p className="text-xs text-slate-600 font-semibold mt-1">
                 Real-time physician calling boards. Auto-syncs every 3 seconds.
               </p>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/15 text-teal-600 dark:text-teal-400 text-xs font-bold uppercase tracking-wide border border-teal-500/20">
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/15 text-teal-600 text-xs font-bold uppercase tracking-wide border border-teal-500/20">
               <RefreshCw className="h-3.5 w-3.5 animate-spin" />
               Auto Refreshing
             </span>
-            <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-400 text-xs font-mono">
+            <div className="p-2 bg-slate-100 rounded-lg text-slate-600 text-xs font-mono">
               Polls: {refreshCount}
             </div>
           </div>
@@ -91,13 +91,13 @@ export default function QueueMonitor() {
               <div></div>
               <div></div>
             </div>
-            <p className="mt-4 text-sm font-semibold text-slate-400">Loading active token queues...</p>
+            <p className="mt-4 text-sm font-semibold text-slate-600">Loading active token queues...</p>
           </div>
         ) : Object.keys(groupedTokens).length === 0 ? (
-          <div className="glass p-12 text-center rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
-            <Bell className="h-12 w-12 text-slate-400 mx-auto animate-bounce" />
-            <h3 className="mt-4 text-lg font-bold text-slate-800 dark:text-slate-100">No Active Tokens</h3>
-            <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto">
+          <div className="glass p-12 text-center rounded-2xl border border-dashed border-slate-200">
+            <Bell className="h-12 w-12 text-slate-600 mx-auto animate-bounce" />
+            <h3 className="mt-4 text-lg font-bold text-slate-800">No Active Tokens</h3>
+            <p className="mt-2 text-slate-700 text-sm max-w-md mx-auto">
               There are currently no patient check-ins registered for today. Use the receptionist portal in the Staff Dashboard to check-in patients.
             </p>
           </div>
@@ -107,12 +107,12 @@ export default function QueueMonitor() {
             {Object.entries(groupedTokens).map(([docId, docInfo]) => (
               <div
                 key={docId}
-                className="glass rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col h-full hover:shadow-teal-500/5 hover:border-teal-500/30 transition-all duration-300"
+                className="glass rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col h-full hover:shadow-teal-500/5 hover:border-teal-500/30 transition-all duration-300"
               >
                 {/* Doctor Title Header */}
-                <div className="bg-slate-500/5 p-5 border-b border-slate-200 dark:border-slate-800">
-                  <h3 className="font-extrabold text-lg text-slate-800 dark:text-slate-100">{docInfo.doctorName}</h3>
-                  <p className="text-xs text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-0.5">
+                <div className="bg-slate-500/5 p-5 border-b border-slate-200">
+                  <h3 className="font-extrabold text-lg text-slate-800">{docInfo.doctorName}</h3>
+                  <p className="text-xs text-teal-600 font-bold uppercase tracking-wider mt-0.5">
                     {docInfo.specialization}
                   </p>
                 </div>
@@ -121,26 +121,26 @@ export default function QueueMonitor() {
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   {/* Current Active Token Box */}
                   <div className="mb-6">
-                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">
+                    <h4 className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-2.5">
                       Now Calling
                     </h4>
                     {docInfo.calling ? (
-                      <div className="bg-teal-500/10 dark:bg-teal-500/5 border border-teal-500/30 p-6 rounded-2xl text-center shadow-inner relative overflow-hidden group">
+                      <div className="bg-teal-500/10 border border-teal-500/30 p-6 rounded-2xl text-center shadow-inner relative overflow-hidden group">
                         {/* Glowing radial accent */}
                         <div className="absolute inset-0 bg-radial-gradient(circle, rgba(20,184,166,0.1) 0%, transparent 80%) opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <span className="block text-5xl font-black text-teal-600 dark:text-teal-400 tracking-wider animate-pulse">
+                        <span className="block text-5xl font-black text-teal-600 tracking-wider animate-pulse">
                           #{docInfo.calling.tokenNumber}
                         </span>
-                        <span className="block text-xs font-bold text-slate-400 uppercase tracking-wide mt-2">
+                        <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide mt-2">
                           Patient: {docInfo.calling.patient.name}
                         </span>
                       </div>
                     ) : (
-                      <div className="bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800/80 p-6 rounded-2xl text-center shadow-inner">
-                        <span className="block text-2xl font-extrabold text-slate-400 dark:text-slate-500 tracking-wider italic">
+                      <div className="bg-slate-100 border border-slate-200 p-6 rounded-2xl text-center shadow-inner">
+                        <span className="block text-2xl font-extrabold text-slate-600 tracking-wider italic">
                           Idle
                         </span>
-                        <span className="block text-xs font-medium text-slate-400 mt-2">
+                        <span className="block text-xs font-medium text-slate-600 mt-2">
                           No active patients being called
                         </span>
                       </div>
@@ -149,7 +149,7 @@ export default function QueueMonitor() {
 
                   {/* Upcoming Tokens list */}
                   <div>
-                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                    <h4 className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">
                       Queue List
                     </h4>
                     {docInfo.waiting.length > 0 ? (
@@ -157,7 +157,7 @@ export default function QueueMonitor() {
                         {docInfo.waiting.map((token) => (
                           <div
                             key={token.id}
-                            className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300"
+                            className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700"
                             title={`Patient: ${token.patient.name}`}
                           >
                             #{token.tokenNumber}
@@ -165,7 +165,7 @@ export default function QueueMonitor() {
                         ))}
                       </div>
                     ) : (
-                      <span className="text-xs text-slate-400 dark:text-slate-500 italic block">
+                      <span className="text-xs text-slate-600 italic block">
                         No upcoming patients in queue
                       </span>
                     )}

@@ -44,8 +44,8 @@ export default function Dashboard() {
   const tabClass = (tab) =>
     `py-3.5 px-1 border-b-2 font-bold text-sm transition-all whitespace-nowrap ${
       activeTab === tab
-        ? 'border-teal-500 text-teal-600 dark:text-teal-400'
-        : 'border-transparent text-slate-400'
+        ? 'border-teal-500 text-teal-600'
+        : 'border-transparent text-slate-700'
     }`;
 
   return (
@@ -53,7 +53,7 @@ export default function Dashboard() {
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 sm:p-8">
-        <div className="flex border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto gap-4">
+        <div className="flex border-b border-slate-200 mb-8 overflow-x-auto gap-4">
           {user.role === 'ADMIN' && (
             <>
               <button onClick={() => setActiveTab('reports')} className={tabClass('reports')}>
@@ -89,7 +89,7 @@ export default function Dashboard() {
         </div>
 
         {checkinMessage && (
-          <div className="p-4 mb-6 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 flex items-center justify-between text-sm">
+          <div className="p-4 mb-6 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-600 flex items-center justify-between text-sm">
             <span>{checkinMessage}</span>
             <button onClick={() => setCheckinMessage('')} className="font-bold underline text-xs">Dismiss</button>
           </div>

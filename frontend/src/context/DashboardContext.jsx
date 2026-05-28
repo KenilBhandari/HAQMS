@@ -43,13 +43,15 @@ export function DashboardProvider({ children }) {
     try {
       const data = await checkIn(API_BASE_URL, token, { patientId, doctorId, appointmentId });
       if (data.success) {
-        setCheckinMessage(`Checked in! Generated Token #${data.token.tokenNumber}`);
+        setCheckinMessage(data.message);
         if (user?.role === 'DOCTOR') doctorWorklistHook.fetchDoctorWorklist();
       } else {
         setCheckinMessage(`Error check-in: ${data.error}`);
       }
+      return data;
     } catch (err) {
       setCheckinMessage(`Error: ${err.message}`);
+      return { success: false, error: err.message };
     }
   };
 

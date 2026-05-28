@@ -22,13 +22,22 @@ export const AuthProvider = ({ children }) => {
     return JSON.parse(atob(padded));
   };
 
+  const setCookie = useCallback((value) => {
+    if (value) {
+      document.cookie = `token=${value}; path=/; max-age=86400; SameSite=Lax`;
+    } else {
+      document.cookie = 'token=; path=/; max-age=0; SameSite=Lax';
+    }
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem('haqms_token');
     localStorage.removeItem('haqms_user');
+    setCookie(null);
     setToken(null);
     setUser(null);
     router.push('/login');
-  }, [router]);
+  }, [router, setCookie]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('haqms_token');
@@ -41,7 +50,9 @@ export const AuthProvider = ({ children }) => {
           if (payload.exp * 1000 < Date.now()) {
             localStorage.removeItem('haqms_token');
             localStorage.removeItem('haqms_user');
+            setCookie(null);
           } else {
+            setCookie(storedToken);
             setToken(storedToken);
             setUser(JSON.parse(storedUser));
           }
@@ -49,11 +60,14 @@ export const AuthProvider = ({ children }) => {
           console.error('Failed to restore auth from localStorage', e);
           localStorage.removeItem('haqms_token');
           localStorage.removeItem('haqms_user');
+          setCookie(null);
         }
+      } else {
+        setCookie(null);
       }
       setLoading(false);
     });
-  }, [logout]);
+  }, [logout, setCookie]);
 
   const login = async (email, password) => {
     setLoading(true);
@@ -80,6 +94,7 @@ export const AuthProvider = ({ children }) => {
       // SECURITY ISSUE: Storing sensitive auth credentials directly in LocalStorage!
       localStorage.setItem('haqms_token', receivedToken);
       localStorage.setItem('haqms_user', JSON.stringify(receivedUser));
+      setCookie(receivedToken);
 
       setToken(receivedToken);
       setUser(receivedUser);

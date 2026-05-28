@@ -71,21 +71,21 @@ export default function BookingPanel() {
   return (
     <div className="space-y-8">
       <div className="grid gap-8 lg:grid-cols-2">
-        <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800">
-          <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+        <div className="glass p-6 rounded-2xl shadow-md border border-slate-200">
+          <h3 className="text-lg font-extrabold text-slate-800 flex items-center gap-2 mb-4">
             <CalendarDays className="h-5 w-5 text-teal-600" />
             Schedule Appointment Slot
           </h3>
 
           {bookingMessage && (
-            <div className={`p-3 text-sm rounded-lg mb-4 ${bookingMessage.startsWith('Success') ? 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border border-teal-500/20' : 'bg-rose-500/15 text-rose-500 border border-rose-500/20'}`}>
+            <div className={`p-3 text-sm rounded-lg mb-4 ${bookingMessage.startsWith('Success') ? 'bg-teal-500/15 text-teal-600 border border-teal-500/20' : 'bg-rose-500/15 text-rose-500 border border-rose-500/20'}`}>
               {bookingMessage}
             </div>
           )}
 
           {recentBooking && (
-            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 mb-4 text-xs text-slate-700 dark:text-slate-300 space-y-1">
-              <p className="font-extrabold uppercase tracking-wider text-slate-500">Recently Booked</p>
+            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 mb-4 text-xs text-slate-700 space-y-1">
+              <p className="font-extrabold uppercase tracking-wider text-slate-700">Recently Booked</p>
               <p><span className="font-bold">Appointment ID:</span> {recentBooking.id}</p>
               <p><span className="font-bold">Patient:</span> {recentPatient?.name || recentBooking.patientId}</p>
               <p><span className="font-bold">Doctor:</span> {recentDoctor?.name || recentBooking.doctorId}</p>
@@ -94,21 +94,21 @@ export default function BookingPanel() {
             </div>
           )}
 
-          <form onSubmit={handleBookAppointment} className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <form onSubmit={handleBookAppointment} className="space-y-4 text-xs font-semibold text-slate-700">
             <div>
               <label className="block mb-1">Select Registered Patient*</label>
               <select
                 required
                 value={bookingPatientId}
                 onChange={(e) => setBookingPatientId(e.target.value)}
-                className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                className="block w-full px-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 text-sm focus:outline-none"
               >
                 <option value="">-- Choose Patient --</option>
                 {patients.map((p) => (
                   <option key={p.id} value={p.id}>{p.name} ({p.phoneNumber})</option>
                 ))}
               </select>
-              <span className="text-xxs text-slate-400 block mt-1">If client is missing, register them in the Directory tab first.</span>
+              <span className="text-xxs text-slate-600 block mt-1">If client is missing, register them in the Directory tab first.</span>
             </div>
 
             <div>
@@ -117,7 +117,7 @@ export default function BookingPanel() {
                 required
                 value={bookingDoctorId}
                 onChange={(e) => setBookingDoctorId(e.target.value)}
-                className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                className="block w-full px-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 text-sm focus:outline-none"
               >
                 <option value="">-- Choose Physician --</option>
                 {doctorsList.map((d) => (
@@ -133,7 +133,7 @@ export default function BookingPanel() {
                 required
                 value={bookingDate}
                 onChange={(e) => setBookingDate(e.target.value)}
-                className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                className="block w-full px-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 text-sm focus:outline-none"
               />
             </div>
 
@@ -144,7 +144,7 @@ export default function BookingPanel() {
                 value={bookingReason}
                 onChange={(e) => setBookingReason(e.target.value)}
                 placeholder="Regular diagnostic review, suture removal..."
-                className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                className="block w-full px-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 text-sm focus:outline-none"
               />
             </div>
 
@@ -157,27 +157,27 @@ export default function BookingPanel() {
           </form>
         </div>
 
-        <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800">
-          <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+        <div className="glass p-6 rounded-2xl shadow-md border border-slate-200">
+          <h3 className="text-lg font-extrabold text-slate-800 flex items-center gap-2 mb-4">
             <Activity className="h-5 w-5 text-teal-600" />
             Active Direct Queue Check-In
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 font-semibold">
+          <p className="text-xs text-slate-700 mb-6 font-semibold">
             Generate an immediate waiting token for a direct walk-in patient. Allocates active positions under selected practitioners.
           </p>
 
           <div className="space-y-6">
-            <div className="p-4 rounded-xl border border-teal-500/25 bg-teal-500/10 text-slate-700 dark:text-slate-300 text-xs leading-5">
+            <div className="p-4 rounded-xl border border-teal-500/25 bg-teal-500/10 text-slate-700 text-xs leading-5">
               <strong>Token Generation Engine Note:</strong> Direct arrivals bypass appointments. The token engine automatically fetches the current days maximum token size and increments.
             </div>
 
-            <div className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <div className="space-y-4 text-xs font-semibold text-slate-700">
               <div>
                 <label className="block mb-1">Select Walk-in Patient*</label>
                 <select
                   value={walkinPatientId}
                   onChange={(e) => setWalkinPatientId(e.target.value)}
-                  className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                  className="block w-full px-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 text-sm focus:outline-none"
                 >
                   <option value="">-- Choose Patient --</option>
                   {patients.map((p) => (
@@ -191,7 +191,7 @@ export default function BookingPanel() {
                 <select
                   value={walkinDoctorId}
                   onChange={(e) => setWalkinDoctorId(e.target.value)}
-                  className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                  className="block w-full px-3 py-2 border border-slate-300 bg-white/50 rounded-lg text-slate-900 text-sm focus:outline-none"
                 >
                   <option value="">-- Choose Physician --</option>
                   {doctorsList.map((d) => (
@@ -208,7 +208,7 @@ export default function BookingPanel() {
                   }
                   handleQueueCheckin(walkinPatientId, walkinDoctorId);
                 }}
-                className="glow-btn w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-teal-500 dark:text-slate-950 dark:hover:bg-teal-400 font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2"
+                className="glow-btn w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2"
               >
                 Generate Live Token
               </button>
@@ -217,33 +217,33 @@ export default function BookingPanel() {
         </div>
       </div>
 
-      <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800">
-        <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 mb-4">
+      <div className="glass p-6 rounded-2xl shadow-md border border-slate-200">
+        <h3 className="text-lg font-extrabold text-slate-800 mb-4">
           Recent Bookings
         </h3>
         {appointmentsList.length === 0 ? (
-          <p className="text-sm text-slate-400">No appointments loaded yet.</p>
+          <p className="text-sm text-slate-600">No appointments loaded yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-sm text-left">
+            <table className="min-w-full divide-y divide-slate-200 text-sm text-left">
               <thead>
-                <tr className="text-slate-400 uppercase tracking-widest text-xxs font-bold border-b border-slate-200 dark:border-slate-800">
+                <tr className="text-slate-600 uppercase tracking-widest text-xxs font-bold border-b border-slate-200">
                   <th className="pb-3">Time</th>
                   <th className="pb-3">Patient</th>
                   <th className="pb-3">Doctor</th>
                   <th className="pb-3">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100">
                 {appointmentsList.slice(0, 8).map((app) => (
                   <tr key={app.id} className="hover:bg-slate-500/5 transition-colors">
-                    <td className="py-3.5 font-mono font-bold text-slate-800 dark:text-slate-200">
+                    <td className="py-3.5 font-mono font-bold text-slate-800">
                       {new Date(app.appointmentDate).toLocaleString()}
                     </td>
-                    <td className="py-3.5 text-slate-500 dark:text-slate-400 font-semibold">
+                    <td className="py-3.5 text-slate-700 font-semibold">
                       {app.patient?.name || 'Unknown Patient'}
                     </td>
-                    <td className="py-3.5 text-slate-500 dark:text-slate-400 font-semibold">
+                    <td className="py-3.5 text-slate-700 font-semibold">
                       {app.doctor?.name || 'Unknown Doctor'}
                     </td>
                     <td className="py-3.5">
