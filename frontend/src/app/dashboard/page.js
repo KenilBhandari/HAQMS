@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// import
 import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 import Navbar from '@/components/common/Navbar';
 import { useRouter } from 'next/navigation';
 import { 
@@ -355,8 +355,8 @@ export default function Dashboard() {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      if (Array.isArray(data.data)) {
-        setDoctorsList(data.data);
+      if (data.success && Array.isArray(data.doctors)) {
+        setDoctorsList(data.doctors);
       } else {
         alert(`API Error: ${data.sqlMessage || data.error}`);
       }
@@ -895,7 +895,7 @@ export default function Dashboard() {
                       without optional chaining! If medicalHistory is null (which is the case for Batman, Clark Kent, etc.),
                       this code throws: "Cannot read properties of null (reading 'toUpperCase')" and crashes the app! */}
                   <p className="text-slate-700 dark:text-slate-300 leading-5 text-sm font-semibold">
-                    {selectedPatientHistory.medicalHistory.toUpperCase()}
+                 {selectedPatientHistory.medicalHistory?.toUpperCase() ?? 'No clinical history recorded'}
                   </p>
                 </div>
 
